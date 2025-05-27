@@ -7,14 +7,10 @@
             ':marca' => $_POST['marca'],
             ':categoria' => $_POST['categoria'],
             ':valor' => $_POST['valor'],
-
         ];
         cadastro_produtos($info_Peça);
      }
 ?>
-
-
-
 <h1>Cadastro de Produtos</h1>
 <form  method="post">
         <div>
@@ -35,11 +31,11 @@
             </div>
 
             <div>
-                <label for="preço" class="form-label" >Qual o valor do produto</label>
+                <label for="valor" class="form-label" >Qual o valor do produto</label>
                 <input type="text" class="input-text" name="preço" id="valor" placeholder="valor">
             </div>
 
-            <button type="submit" class="btn btn-primary">Cadatrar</button>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
 
         </div>
 </form>
