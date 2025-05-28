@@ -12,10 +12,11 @@ $lista_produtos = listar_produtos($search);
 
 <h4>listar cadastro</h4>
 <form method="POST" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="nome" class="form-control" placeholder="Filtrar por nome" value="<?php echo isset($_POST['nome']) ? htmlspecialchars($_POST['nome']) : ''; ?>">
-        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Filtrar</button>
-    </div>
+        <div class="input-group">
+            <input type="text" name="nome" class="form-control" placeholder="Filtrar por nome" value="<?php echo isset($_POST['nome']) ? htmlspecialchars($_POST['nome']) : ''; ?>">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Filtrar</button>
+        </div>
+    </form>
     <div class="table-responsive">
         <table class="table table-striped table-bordered mt-3">
             <thead class="table-dark">
@@ -31,20 +32,24 @@ $lista_produtos = listar_produtos($search);
                 <?php
                 if($lista_produtos) {
                     foreach($lista_produtos as $produto) {
-                        $id = $produto["id"];
+                        $id = $produto["id_produto"];
                         $nome = $produto["nome"];
                         $marca = $produto["marca"];
-                        $categoria = $produto["categoria"];
+                        $tipo = $produto["tipo"];
                         $valor = $produto["valor"];
                         echo "
                         <tr>
                             <td>{$nome}</td>
                             <td>{$marca}</td>
-                            <td>{$categoria}</td>
+                            <td>{$tipo}</td>
                             <td>{$valor}</td>
                             <td style='text-align: center;'>
-                                <a href='?acao=alterar&id={$id}' class='btn btn-warning btn-sm'><i class='bi bi-pencil'></i> Alterar</a>
-                                <a href='?acao=excluir&id={$id}' class='btn btn-danger btn-sm'><i class='bi bi-trash'></i> Excluir</a>
+                            <a class='btn btn-sm btn-warning' title='Alterar' href='?list&acao=alterar&id={$id}'>
+                            <i class='bi bi-pencil-square'></i>
+                             </a>
+                             <button class='btn btn-sm btn-danger' title='Excluir' onclick='delete_pessoa({$id})'>
+                            <i class='bi bi-trash-fill'></i>
+                             </button>
                             </td>
                         </tr>";
                     }
@@ -54,4 +59,11 @@ $lista_produtos = listar_produtos($search);
                 ?>
             </tbody>
         </table>
-</form>
+    </div>
+    <script>
+        const delete_pessoa = (id)=>{
+            if(confirm("Deseja realmente excluir?")) {
+                window.location.href="?list&acao=excluir&id=" + id;
+            }
+        }
+    </script>

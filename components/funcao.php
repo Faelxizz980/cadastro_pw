@@ -18,9 +18,8 @@ function conectar(): PDO {
  * Exibe um alerta Bootstrap.
  * @param string $tipo
  * @param string $titulo
- * @param string $mensagem
- * @param $string 
- * @return void
+ * @param string $mensagem 
+ * @return string
  */
 function alerta($tipo, $titulo, $mensagem): void {
     $titulo_alert = "<i class='bi bi-check-circle'></i> {$titulo}";
@@ -38,68 +37,82 @@ function alerta($tipo, $titulo, $mensagem): void {
     ";
 }
 
+/**
+ * Summary of cadastrar_produtos
+ * @param array $dados Formato de array [':nome' => Varchar, ':marca' => Varchar, ':tipo' => Varchar, ':valor' => Float]
+ */
 // Função para cadastrar produtos
 function cadastro_produtos($dados): void {
-    $cx = conectar();
-    $sql = "INSERT INTO produtos (nome, marca, categoria, valor) 
-                VALUES (:nome, :marca, :categoria, :valor)";
+    $cadastro = conectar();
+    $sql = "INSERT INTO produto (nome, marca, tipo, valor) 
+                VALUES (:nome, :marca, :tipo, :valor)";
         
-    $stmt = $cx->prepare($sql);
+    $preparar = $cadastro->prepare($sql);
     try{
-        $stmt->execute($dados);
-        alerta('ok', 'Cadastro realizado com sucesso!', 'Produto cadastrado com sucesso!');
-    } catch (PDOException $e) {
-        alerta('erro', 'Erro ao cadastrar produto', 'Erro: ' . $e->getMessage());
+        $preparar->execute($dados);
+        if($preparar ->rowCount() > 0){
+            alerta('ok', 'Produto Cadastrado com sucesso!', 'Cadastrado com sucesso com sucesso!');
+        }
+        else {
+            alerta('erro', 'Erro ao cadastrar!', 'Não foi possível cadastrar a pessoa.');
+        }
+    }
+        catch (PDOException $e) {
+        alerta('erro', 'Erro ao cadastrar produto',  $e->getMessage());
     }
 }
 
-function alterar_produtos($dados): void {
-    $cx = conectar();
+function alterar_produtos($dados): bool {
+    $cadastro = conectar();
     $sql = "UPDATE produtos SET nome = :nome, marca = :marca, categoria = :categoria, valor = :valor WHERE id = :id";
     
-    $stmt = $cx->prepare($sql);
+    $preparar = $cadastro->prepare($sql);
     try{
-        $stmt->execute($dados);
-        alerta('ok', 'Alteração realizada com sucesso!', 'Produto alterado com sucesso!');
+        $preparar->execute($dados);
+        if ($preparar->rowCount() > 0) {
+            alerta('ok', 'Cadastro alterado com sucesso!', 'Pessoa alterada com sucesso.');
+            return true;
+        }
+        else {
+            alerta('erro', 'Erro ao alterar!', 'Não foi possível alterar a pessoa.');
+            return false;
+        }
     } catch (PDOException $e) {
-        alerta('erro', 'Erro ao alterar produto', 'Erro: ' . $e->getMessage());
+        alerta('erro', 'Erro ao cadastrar o produto',  $e->getMessage());
     }
 }
 
 function listar_produtos($search = ""): array {
-    $cx = conectar();
-    if ($search !== "") {
-        $sql = "SELECT * FROM produtos WHERE nome LIKE :search";
-        $stmt = $cx->prepare($sql);
-        $like = "%{$search}%";
-        $stmt->bindParam(':search', $like, PDO::PARAM_STR);
-        $stmt->execute();
-    } else {
-        $sql = "SELECT * FROM produtos";
-        $stmt = $cx->query($sql);
-    }
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $cadastro = conectar();
+        $sql = "SELECT * FROM produto WHERE nome LIKE :search";
+        $prepare = $cadastro->prepare($sql);
+        $search = "%{$search}%";
+        $prepare->execute([":search" => $search]);
+        return $prepare->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function lista_produtos_id($id): ?array {
-    $cx = conectar();
-    $sql = "SELECT * FROM produtos WHERE id = :id";
-    $stmt = $cx->prepare($sql);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+function lista_produtos_id($id): array {
+    $lista = conectar();
+    $sql = "SELECT * FROM produto WHERE id = :id_produto";
+    $preparo = $lista->prepare($sql);
+    $preparo->execute([":id" => $id]);
+    return $preparo->fetch(PDO::FETCH_ASSOC);
 }
 
 function delete_produto($id): void {
-    $cx = conectar();
-    $sql = "DELETE FROM produtos WHERE id = :id";
-    $stmt = $cx->prepare($sql);
+    $cadastro = conectar();
+    $sql = "DELETE FROM produto WHERE id_produto = :id_produto";
+    $preparar = $cadastro->prepare($sql);
     try {
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        alerta('ok', 'Produto excluído!', 'Produto removido com sucesso!');
+       $preparar -> execute([":id_produto" => $id]);
+       if($preparar -> rowCount() >0){
+        alerta('ok', 'Cadastro excluído com sucesso!', 'Pessoa excluída com sucesso.');
+       }
+       else{
+        alerta('erro', 'Erro ao excluir!', 'Não foi possível excluir a pessoa.');
+       }
     } catch (PDOException $e) {
-        alerta('erro', 'Erro ao excluir produto', 'Erro: ' . $e->getMessage());
+        alerta('erro', 'Erro ao excluir produto',$e->getMessage());
     }
 }
 ?>

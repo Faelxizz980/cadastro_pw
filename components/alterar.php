@@ -5,7 +5,7 @@ require_once(__DIR__ . "/funcao.php");
         $info_Peça = [
             ':nome' => $_POST['nome'],
             ':marca' => $_POST['marca'],
-            ':categoria' => $_POST['categoria'],
+            ':tipo' => $_POST['tipo'],
             ':valor' => $_POST['valor'],
         ];
 
@@ -30,7 +30,7 @@ require_once(__DIR__ . "/funcao.php");
 <h2>Alterar produto</h2>
 <form method="post">
     <div class="row mb-3">
-        <input type="hidden" name="id" value="<?php echo $produto['id']; ?>">
+        <input type="hidden" name="id_produto" value="<?php echo $produto['id_produto']; ?>">
         <div class="col-md-4">
             <label for="nome" class="form-label">Nome do Produto</label>
             <input type="text" class="form-control" id="nome" name="nome" value="<?php echo $produto['nome']; ?>">
@@ -40,8 +40,8 @@ require_once(__DIR__ . "/funcao.php");
             <input type="text" class="form-control" id="marca" name="marca" value="<?php echo $produto['marca']; ?>">
         </div>
         <div class="col-md-4">
-            <label for="categoria" class="form-label">Categoria do Produto</label>
-            <input type="text" class="form-control" id="categoria" name="categoria" value="<?php echo $produto['categoria']; ?>">
+            <label for="tipo" class="form-label">Categoria do Produto</label>
+            <input type="text" class="form-control" id="tipo" name="tipo" value="<?php echo $produto['tipo']; ?>">
         </div>
     </div>
 
