@@ -1,8 +1,9 @@
 CREATE DATABASE techInfo;
+drop DATABASE techInfo;
+drop table produto;
 
 use techInfo;
 
-drop table produto;
 CREATE table produto(
     id_produto INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR (100) DEFAULT NULL,
