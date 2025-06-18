@@ -33,7 +33,6 @@ function alerta($tipo, $titulo, $mensagem): void {
         <div class='{$class} alert-dismissible fade show' role='alert'>
             <strong>{$titulo_alert}</strong>
             {$mensagem}
-            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
         </div>
     ";
 }
@@ -52,11 +51,7 @@ function cadastro_produtos($dados): void {
     try {
         $preparar->execute($dados);
         if ($preparar->rowCount() > 0) {
-            // Alerta opcional
-            // alerta('ok', 'Produto Cadastrado com sucesso!', 'Cadastrado com sucesso!');
-            // Redireciona para a listagem
-            header('Location: listar_produtos.php');
-            exit;
+            alerta('ok', 'Cadastro realizado com sucesso', 'Produto cadastrado com sucesso.');
         } else {
             alerta('erro', 'Erro ao cadastrar!', 'Não foi possível cadastrar o produto.');
         }
@@ -109,10 +104,10 @@ function delete_produto($id): void {
     try {
        $preparar -> execute([":id_produto" => $id]);
        if($preparar -> rowCount() >0){
-        alerta('ok', 'Cadastro excluído com sucesso!', 'Pessoa excluída com sucesso.');
+        alerta('ok', 'Cadastro excluído com sucesso!', 'Produto excluído com sucesso.');
        }
        else{
-        alerta('erro', 'Erro ao excluir!', 'Não foi possível excluir a pessoa.');
+        alerta('erro', 'Erro ao excluir!', 'Não foi possível excluir o produto.');
        }
     } catch (PDOException $e) {
         alerta('erro', 'Erro ao excluir produto',$e->getMessage());

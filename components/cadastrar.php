@@ -4,7 +4,7 @@
      if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $info_Peça = [
             ':nome' => $_POST['nome'],
-            ':marca' => $_POST['marca'],
+            ':marca' => $_POST['marca'], 
             ':tipo' => $_POST['tipo'],
             ':valor' => $_POST['valor'],
         ]; 

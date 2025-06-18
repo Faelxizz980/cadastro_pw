@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET["acao"]) && $_GET["acao"] == "excluir") {
-    $id = $_GET["id"];
+    $id = $_GET["id_produto"];
     delete_produto($id); // Corrigido aqui
 }
 $search = isset($_POST["nome"]) ? $_POST["nome"]:'';
@@ -43,12 +43,12 @@ $lista_produtos = listar_produtos($search);
                             <td>{$marca}</td>
                             <td>{$tipo}</td>
                             <td>{$valor}</td>
-                            <td style='text-align: center;'>
-                            <a class='btn btn-sm btn-warning' title='Alterar' href='?list&acao=alterar&id={$id}'>
-                            <i class='bi bi-pencil-square'></i>
-                             </a>
-                             <button class='btn btn-sm btn-danger' title='Excluir' onclick='delete_pessoa({$id})'>
-                            <i class='bi bi-trash-fill'></i>
+                            <td>
+                            <button class='btn btn-sm btn-warning' title='Alterar' onclick='alterar_produtos({$id})'>
+                                <i class='bi bi-pencil-square'></i>
+                             </button>
+                             <button class='btn btn-sm btn-danger' title='Excluir' onclick='delete_produto({$id})'>
+                                 <i class='bi bi-trash-fill'></i>
                              </button>
                             </td>
                         </tr>";
@@ -61,9 +61,9 @@ $lista_produtos = listar_produtos($search);
         </table>
     </div>
     <script>
-        const delete_pessoa = (id)=>{
+        const delete_produto = (id)=>{
             if(confirm("Deseja realmente excluir?")) {
-                window.location.href="?list&acao=excluir&id=" + id;
+                window.location.href="?list&acao=excluir&id_produto=" + id;
             }
         }
     </script>
